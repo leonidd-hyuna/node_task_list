@@ -1,11 +1,51 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+	<head>
+		<title><%= title %></title>
+			<link rel="stylesheet" href="/css/bootstrap.min.css">
+			<script src="/js/jquery.min.js"></script>
+			<script src="/js/bootstrap.min.js"></script>
+		<!--<link rel='stylesheet' href='/stylesheets/style.css' />-->
+	</head>
+	<body>
+		<h1><%= title %></h1>
+		<form action="" id="get_tasks_list_form">
+		    <input type="hidden" name="id" value="1">
+		    <button class="btn btn-primary" id="refresh_tasks_list_form">refreshData</button>
+		</form>
+	    <div>
+		    <table id="#taskList">
+
+		    </table>
+	    </div>
+	</body>
 </html>
+
+<script>
+	$( document ).ready(function() {
+		$("#refresh_tasks_list_form").click(getData());
+	});
+	function refreshData(result) {
+		$.each(result, function (id, row) {
+			$('<tr>').html(
+					$('td').text(row.id),
+					$('td').text(row.title),
+					$('td').text(row.date_sheduled),
+					$('td').text(row.date_finished)
+			).appendTo('#taskList');
+
+//				alert('key:'+k+'= value:'+v);
+		});
+	}
+
+	function getData() {
+		$.ajax({
+			type: "POST",
+			url: '/getTasks',
+			data: $("#get_tasks_list_form").serialize(),
+			success: function (data) {
+				refreshData(data);
+			}
+		});
+	}
+</script>
