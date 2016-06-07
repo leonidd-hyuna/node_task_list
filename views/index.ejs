@@ -13,9 +13,14 @@
 		    <input type="hidden" name="id" value="1">
 		    <button class="btn btn-primary" id="refresh_tasks_list_form">refreshData</button>
 		</form>
-	    <div>
-		    <table id="#taskList">
 
+		<form action="" id="get_tasks_list_form">
+		    <input type="hidden" name="id" value="1">
+		    <button class="btn btn-primary" id="refresh_tasks_list_form">refreshData</button>
+		</form>
+
+	    <div>
+		    <table id="taskList" border="1px" width="500px">
 		    </table>
 	    </div>
 	</body>
@@ -24,28 +29,38 @@
 <script>
 	$( document ).ready(function() {
 		$("#refresh_tasks_list_form").click(getData());
+
+		function refreshData(result) {
+			resultData = '';
+			$.each(result, function (num, row) {
+				resultData = resultData+'<tr><td>'+row.id+'</td>'+'<td>'+row.title+'</td>'+'<td>'+row.date_sheduled+'</td>'+'<td>'+row.date_finished+'</td></tr>';
+			});
+			$('#taskList').append(resultData);
+//			return false;
+		}
+
+		function alertData(data) {
+			alert(data);
+		}
+
+		function getData() {
+			var ajaxOptions = {
+				type: "POST",
+				url: '/getTasks',
+				data: $("#get_tasks_list_form").serialize(),
+			};
+			$.ajax(ajaxOptions)
+				.done(function (data) {
+//					alertData(data);
+					refreshData(data);
+				})
+				.fail(function (data) {
+					alertData('fail');
+				});
+//				.always(function (data) {
+//					alertData('always');
+//				});
+
+		}
 	});
-	function refreshData(result) {
-		$.each(result, function (id, row) {
-			$('<tr>').html(
-					$('td').text(row.id),
-					$('td').text(row.title),
-					$('td').text(row.date_sheduled),
-					$('td').text(row.date_finished)
-			).appendTo('#taskList');
-
-//				alert('key:'+k+'= value:'+v);
-		});
-	}
-
-	function getData() {
-		$.ajax({
-			type: "POST",
-			url: '/getTasks',
-			data: $("#get_tasks_list_form").serialize(),
-			success: function (data) {
-				refreshData(data);
-			}
-		});
-	}
 </script>

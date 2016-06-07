@@ -7,6 +7,7 @@ var bodyParser      = require('body-parser');
 var routes          = require('./routes/index');
 var users           = require('./routes/users');
 var tasks           = require('./routes/tasks');
+var q      = require('q');
 
 var app = express();
 
@@ -15,14 +16,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 var result = {};
-//connection.connect();
-
-
-
-//connection.end();
-
-console.log(result);
-// DB stop
 
 
 // uncomment after placing your favicon in /public
