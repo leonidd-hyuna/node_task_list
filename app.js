@@ -7,10 +7,11 @@ var bodyParser      = require('body-parser');
 var routes          = require('./routes/index');
 var users           = require('./routes/users');
 var tasks           = require('./routes/tasks');
+var insert          = require('./routes/insert');
 var q               = require('q');
-var config      = require('./config');
-var app = express();
-
+var config          = require('./config');
+var app             = express();
+var router          = express.Router();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/getTasks', tasks);
+app.use('/addNewTask', insert);
 
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery

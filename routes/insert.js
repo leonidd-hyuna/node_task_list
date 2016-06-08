@@ -3,15 +3,9 @@ var router          = express.Router();
 var q               = require('q');
 var LeoTaskModel    = require('../models/leo_tasks');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
+/* POST*/
+router.post('/', function(req, res, next) {
 
-    // sending response from model without promise
-    //var result = LeoTaskModel.getAllTasks(req, res, function(err, result) {
-    //    res.render('tasks', {tasks: result});
-    //});
-
-    // sending response from model WITH promise  ---
     var deferred = q.defer();
 
     sendResponse().then(function(newResponse) {
@@ -19,7 +13,13 @@ router.get('/', function(req, res, next) {
     });
 
     function sendResponse(){
-        LeoTaskModel.getAllTasks(req, res, function(err, result) {
+        var data = {
+            title           :req.body.title,
+            description     :req.body.description,
+            date_scheduled  :req.body.date_scheduled
+        };
+
+        LeoTaskModel.addNewTask(data, res, function(err, result) {
             if (err) {
                 throw err;
             }
