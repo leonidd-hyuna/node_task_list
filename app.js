@@ -8,7 +8,7 @@ var routes          = require('./routes/index');
 var users           = require('./routes/users');
 var tasks           = require('./routes/tasks');
 var q               = require('q');
-
+var config      = require('./config');
 var app = express();
 
 // view engine setup

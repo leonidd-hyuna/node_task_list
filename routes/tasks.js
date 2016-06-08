@@ -1,19 +1,18 @@
 var express = require('express');
-var router = express.Router();
-var q      = require('q');
-
-// DB connection start
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
-    host     : '10.0.10.7',
-    user     : 'root',
-    password : 'jomedia123',
-    database : 'nodejs_test_db'
-});
+var router  = express.Router();
+var q       = require('q');
+var db      = require('../models/db');
+var LeoTaskModel      = require('../models/leo_tasks');
 
 /* GET users listing. */
 router.post('/', function(req, res, next) {
 
+    // sending response from model without promise
+    //var result = LeoTaskModel.getAllTasks(req, res, function(err, result) {
+    //    res.render('tasks', {tasks: result});
+    //});
+
+    // sending response from model WITH promise  ---
     var deferred = q.defer();
 
     sendResponse().then(function(newResponse) {
@@ -21,15 +20,15 @@ router.post('/', function(req, res, next) {
     });
 
     function sendResponse(){
-
-        connection.query('SELECT * from leo_tasks', function(err, rows, fields) {
+        LeoTaskModel.getAllTasks(req, res, function(err, result) {
             if (err) {
                 throw err;
             }
-            deferred.resolve(rows);
+            deferred.resolve(result);
         });
         return deferred.promise;
     }
+    // --- sending response from model WITH promise
 
 });
 
