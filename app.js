@@ -8,6 +8,7 @@ var routes          = require('./routes/index');
 var users           = require('./routes/users');
 var tasks           = require('./routes/tasks');
 var insert          = require('./routes/insert');
+var deleteTask      = require('./routes/deleteTask');
 var q               = require('q');
 var config          = require('./config');
 var app             = express();
@@ -31,6 +32,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/getTasks', tasks);
 app.use('/addNewTask', insert);
+app.use('/deleteTask', deleteTask);
 
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery

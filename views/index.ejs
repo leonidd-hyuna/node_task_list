@@ -38,22 +38,28 @@
 	$( document ).ready(function() {
 		$("#refresh_tasks_list_submit").on('click',function(){getData(); return false;});
 		$("#insert_new_task_submit").on('click',function(){addNewTask(); return false;});
+		$("#delete_task_submit").on('click',function(){deleteTask(); return false;});
 
 	});
 
 	function refreshData(result) {
 		resultData = '<thead>'
 						+'<th>id</th>'
-						+'<th>title</th>'
+						+'<th>Title</th>'
+						+'<th>Description</th>'
 						+'<th>Date Scheduled</th>'
 						+'<th>Date Finished</th>'
+						+'<th>Task Actions</th>'
 					+'</thead>';
 		$.each(result, function (num, row) {
+			var deleteButton = '<a class="btn btn-primary delete_task_submit">Delete</a>';
 			resultData = resultData
-					+'<tr><td>'+row.id+'</td>'
+					+'<tr><td class="taskId">'+row.id+'</td>'
 					+'<td>'+row.title+'</td>'
+					+'<td>'+row.description+'</td>'
 					+'<td>'+row.date_scheduled+'</td>'
-					+'<td>'+row.date_finished+'</td></tr>';
+					+'<td>'+row.date_finished+'</td>';
+					+'<td>'+deleteButton+'</td></tr>';
 		});
 		$('#taskList').html(resultData);
 	}
@@ -85,6 +91,26 @@
 				.done(function (data) {
 					getData();
 					alert("inserted "+data.affectedRows+"with id="+data.insertId);
+				})
+				.fail(function (data) {
+//				alertData('fail');
+				});
+//				.always(function (data) {
+//					alertData('always');
+//				});
+	}
+
+	function deleteTask() {
+		var row = $(this).closest("tr"),
+            currentId = row.find(".taskId").text();
+		    ajaxOptions = {
+                type: "DELETE",
+                url: '/deleteTask/'+currentId,
+            };
+		$.ajax(ajaxOptions)
+				.done(function (data) {
+					getData();
+					alert("deleted "+data.affectedRows+" row ");
 				})
 				.fail(function (data) {
 //				alertData('fail');
