@@ -8,8 +8,19 @@ var LeoTasksModel = {};
 LeoTasksModel.table_name = 'leo_tasks';
 LeoTasksModel.database_name = db.pool.config.connectionConfig.database;
 
-LeoTasksModel.getAllTasks = function(request, res, callback) {
+LeoTasksModel.getAllTasks = function(res, callback) {
     var req = "SELECT * from `"+this.database_name+"`.`"+this.table_name+"`";
+
+    db.query(req, function(err, result){
+        if (err) {
+            return callback(err);
+        }
+        callback(false, result);
+    });
+};
+LeoTasksModel.getTask = function(data, res, callback) {
+    var req = "SELECT * from `"+this.database_name+"`.`"+this.table_name+"`" +
+        " WHERE `id`='"+data.id+"'";
 
     db.query(req, function(err, result){
         if (err) {
@@ -37,7 +48,7 @@ LeoTasksModel.addNewTask = function(data, res, callback) {
 
 LeoTasksModel.deleteTask = function(data, res, callback) {
     var req = "DELETE FROM `"+this.database_name+"`.`"+this.table_name+"`"
-            +" WHERE `id` = '"+data.id+"');";
+            +" WHERE `id` = '"+data.id+"';";
 
     db.query(req, function(err, result){
         if (err) {
