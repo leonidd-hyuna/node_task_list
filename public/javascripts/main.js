@@ -38,7 +38,7 @@ function refreshData(result) {
 function getData() {
     var ajaxOptions = {
         type: "GET",
-        url: '/getTask',
+        url: '/tasks',
     };
     $.ajax(ajaxOptions)
         .done(function (data) {
@@ -55,7 +55,7 @@ function getData() {
 function addNewTask() {
     var ajaxOptions = {
         type: "POST",
-        url: '/addNewTask',
+        url: '/tasks',
         data: $("#insert_new_task").serialize(),
     };
     $.ajax(ajaxOptions)
@@ -71,7 +71,7 @@ function deleteTask(block) {
         currentId = row.find("td.taskId").text();
     ajaxOptions = {
         type: "DELETE",
-        url: '/deleteTask/'+currentId,
+        url: '/tasks/'+currentId,
     };
     $.ajax(ajaxOptions)
         .done(function (data) {
@@ -86,7 +86,7 @@ function editTask(block) {
         currentId = row.find("td.taskId").text();
     ajaxOptions = {
         type: "GET",
-        url: '/getTask/'+currentId,
+        url: '/tasks/'+currentId,
     };
     $.ajax(ajaxOptions)
         .done(function (data) {
@@ -101,7 +101,7 @@ function finishTask(block) {
         currentId = row.find("td.taskId").text();
     ajaxOptions = {
         type: "PATCH",
-        url: '/finishTask/'+currentId,
+        url: '/tasks/'+currentId,
     };
     $.ajax(ajaxOptions)
         .done(function (data) {

@@ -6,9 +6,6 @@ var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
 var routes          = require('./routes/index');
 var tasks           = require('./routes/tasks');
-var insert          = require('./routes/insert');
-var deleteTask      = require('./routes/deleteTask');
-var finishTask      = require('./routes/finishTask');
 var app             = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,10 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/getTask', tasks);
-app.use('/addNewTask', insert);
-app.use('/deleteTask', deleteTask);
-app.use('/finishTask', finishTask);
+app.use('/tasks', tasks);
 
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
