@@ -45,10 +45,22 @@ LeoTasksModel.addNewTask = function(data, res, callback) {
     });
 };
 
-
 LeoTasksModel.deleteTask = function(data, res, callback) {
     var req = "DELETE FROM `"+this.database_name+"`.`"+this.table_name+"`"
             +" WHERE `id` = '"+data.id+"';";
+
+    db.query(req, function(err, result){
+        if (err) {
+            return callback(err);
+        }
+        callback(false, result);
+    });
+};
+
+LeoTasksModel.patchTask = function(data, res, callback) {
+    var req = "UPDATE `"+this.database_name+"`.`"+this.table_name+"`"
+            +" SET `date_finished` = '" + data.date_finished + "'" +
+        "WHERE `id`='"+data.id+"';";
 
     db.query(req, function(err, result){
         if (err) {

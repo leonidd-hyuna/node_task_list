@@ -6,6 +6,7 @@ $(function() {
     $('#insert_new_task_submit').on('click',function(){addNewTask(); return false;});
     $(document).on('click', 'a.delete_task_submit', function(){deleteTask(this);});
     $(document).on('click', 'a.edit_task_submit', function(){editTask(this);});
+    $(document).on('click', 'a.finish_task_submit', function(){finishTask(this);});
 });
 
 function refreshData(result) {
@@ -19,7 +20,8 @@ function refreshData(result) {
         '</thead>';
     $.each(result, function (num, row) {
         var deleteButton = "<a class='delete_task_submit btn btn-primary'>Delete</a>";
-        var editButton = "<a class='edit_task_submit btn btn-primary'>Edit</a>";
+        var editButton = "<a class='edit_task_submit btn btn-primary'>Get this Task</a>";
+        var finishButton = "<a class='finish_task_submit btn btn-primary'>Finish</a>";
         resultData = resultData
             +'<tr>' +
             '<td class="taskId">'+row.id+'</td>' +
@@ -27,7 +29,7 @@ function refreshData(result) {
             '<td>'+row.description+'</td>' +
             '<td>'+row.date_scheduled+'</td>' +
             '<td>'+row.date_finished+'</td>' +
-            '<td>'+deleteButton+' '+editButton+'</td>' +
+            '<td>'+deleteButton+' '+editButton+' '+finishButton+'</td>' +
             '</tr>';
     });
     $('#taskList').html(resultData);
@@ -36,7 +38,7 @@ function refreshData(result) {
 function getData() {
     var ajaxOptions = {
         type: "GET",
-        url: '/getTasks',
+        url: '/getTask',
     };
     $.ajax(ajaxOptions)
         .done(function (data) {
@@ -61,12 +63,7 @@ function addNewTask() {
             getData();
             alert("inserted "+data.affectedRows+" row with id="+data.insertId);
         })
-        .fail(function (data) {
-//				alertData('fail');
-        });
-//				.always(function (data) {
-//					alertData('always');
-//				});
+        .fail(function (data) {});
 }
 
 function deleteTask(block) {
@@ -81,12 +78,7 @@ function deleteTask(block) {
             getData();
             alert("deleted "+data.affectedRows+" row ");
         })
-        .fail(function (data) {
-//				alertData('fail');
-        });
-//				.always(function (data) {
-//					alertData('always');
-//				});
+        .fail(function (data) {});
 }
 
 function editTask(block) {
@@ -94,17 +86,27 @@ function editTask(block) {
         currentId = row.find("td.taskId").text();
     ajaxOptions = {
         type: "GET",
-        url: '/getTasks/'+currentId,
+        url: '/getTask/'+currentId,
     };
     $.ajax(ajaxOptions)
         .done(function (data) {
             getData();
             alert("editing "+data+" row ");
         })
-        .fail(function (data) {
-//				alertData('fail');
-        });
-//				.always(function (data) {
-//					alertData('always');
-//				});
+        .fail(function (data) {});
+}
+
+function finishTask(block) {
+    var row = $(block).closest("tr"),
+        currentId = row.find("td.taskId").text();
+    ajaxOptions = {
+        type: "PATCH",
+        url: '/finishTask/'+currentId,
+    };
+    $.ajax(ajaxOptions)
+        .done(function (data) {
+            getData();
+            alert("updated "+data.affectedRows+" row ");
+        })
+        .fail(function (data) {});
 }
