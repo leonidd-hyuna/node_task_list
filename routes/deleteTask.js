@@ -19,7 +19,9 @@ router.delete('/:id', function(req, res, next) {
 
         LeoTaskModel.deleteTask(data, res, function(err, result) {
             if (err) {
-                throw err;
+                //throw err; //commented because of server fail
+                console.log(err);
+                deferred.reject(err);
             }
             deferred.resolve(result);
         });

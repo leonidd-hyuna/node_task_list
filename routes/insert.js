@@ -21,7 +21,9 @@ router.post('/', function(req, res, next) {
 
         LeoTaskModel.addNewTask(data, res, function(err, result) {
             if (err) {
-                throw err;
+                //throw err; //commented because of server fail
+                console.log(err);
+                deferred.reject(err);
             }
             deferred.resolve(result);
         });

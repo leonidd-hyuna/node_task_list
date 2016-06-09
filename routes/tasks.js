@@ -13,7 +13,9 @@ router.get('/', function(req, res, next) {
     function sendResponse(){
         LeoTaskModel.getAllTasks(res, function(err, result) {
             if (err) {
-                throw err;
+                //throw err; //commented because of server fail
+                console.log(err);
+                deferred.reject(err);
             }
             deferred.resolve(result);
         });
@@ -32,7 +34,9 @@ router.get('/', function(req, res, next) {
         };
         LeoTaskModel.getTask(data, res, function(err, result) {
             if (err) {
-                throw err;
+                //throw err; //commented because of server fail
+                console.log(err);
+                deferred.reject(err);
             }
             deferred.resolve(result);
         });
