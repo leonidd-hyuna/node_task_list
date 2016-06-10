@@ -4,12 +4,12 @@
 var db = require('./db');
 var q  = require('q');
 
-var LeoTasksModel = {
-    table_name      : 'leo_tasks',
-    database_name   : db.pool.config.connectionConfig.database,
+function LeoTasksModel() {
+    this.table_name = 'leo_tasks',
+    prototype  = db,
 
-    getAllTasks : function(res, callback) {
-        var req = "SELECT * from `"+this.database_name+"`.`"+this.table_name+"`";
+    this.getAllTasks = function(res, callback) {
+        var req = "SELECT * from `"+db.db_name+"`.`"+this.table_name+"`";
 
         db.query(req, function(err, result){
             if (err) {
@@ -18,8 +18,8 @@ var LeoTasksModel = {
             callback(false, result);
         });
     },
-    getTask : function(data, res, callback) {
-        var req = "SELECT * from `"+this.database_name+"`.`"+this.table_name+"`" +
+        this.getTask = function(data, res, callback) {
+        var req = "SELECT * from `"+db.db_name+"`.`"+this.table_name+"`" +
             " WHERE `id`='"+data.id+"'";
 
         db.query(req, function(err, result){
@@ -29,8 +29,8 @@ var LeoTasksModel = {
             callback(false, result);
         });
     },
-    addNewTask : function(data, res, callback) {
-        var req = "INSERT INTO  `"+this.database_name+"`.`"+this.table_name+"`"
+    this.addNewTask = function(data, res, callback) {
+        var req = "INSERT INTO  `"+db.db_name+"`.`"+this.table_name+"`"
             +" (`title`, `description`, `date_scheduled`)"
             +" VALUES ("
             +"'"+data.title+"', '"+data.description+"', '"+data.date_scheduled+"'"
@@ -43,8 +43,8 @@ var LeoTasksModel = {
             callback(false, result);
         });
     },
-    deleteTask : function(data, res, callback) {
-        var req = "DELETE FROM `"+this.database_name+"`.`"+this.table_name+"`"
+    this.deleteTask = function(data, res, callback) {
+        var req = "DELETE FROM `"+db.db_name+"`.`"+this.table_name+"`"
             +" WHERE `id` = '"+data.id+"';";
 
         db.query(req, function(err, result){
@@ -54,8 +54,8 @@ var LeoTasksModel = {
             callback(false, result);
         });
     },
-    patchTask : function(data, res, callback) {
-        var req = "UPDATE `"+this.database_name+"`.`"+this.table_name+"`"
+    this.patchTask = function(data, res, callback) {
+        var req = "UPDATE `"+db.db_name+"`.`"+this.table_name+"`"
             +" SET `date_finished` = '" + data.date_finished + "'" +
             "WHERE `id`='"+data.id+"';";
 
@@ -68,4 +68,4 @@ var LeoTasksModel = {
     }
 };
 
-module.exports = LeoTasksModel;
+module.exports = new LeoTasksModel;
